@@ -21,11 +21,17 @@ jobs:
         with:
           node-version: '20.x'
 
-      - name: npm install, build, and test
+      - name: Install npm packages - server
         run: |
-          npm install
-          npm run build --if-present
-          npm run test --if-present
+          cd server
+          npm install       
+      
+      - name: Install npm packages, build then copy files - client
+        run: |
+          cd client
+          npm install --legacy-peer-deps 
+          npm run build
+          cp -r ./build ../server/public
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
